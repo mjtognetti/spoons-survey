@@ -1,0 +1,90 @@
+<html>
+   <head>
+      <link rel="stylesheet" type="text/css" href="styles/ui-lightness/jquery-ui-1.8.17.custom.css" />
+      <link rel="stylesheet" type="text/css" href="styles/survey.css" />
+      <script type="text/javascript" src="js/vendor/jquery-1.7.1.min.js"></script>
+      <script type="text/javascript" src="js/vendor/jquery-ui-1.8.17.custom.min.js"></script>
+      <script type="text/javascript" src="js/src/survey.js"></script>
+      <script type="text/javascript">
+         $(function() {
+            $("#valence-slider").slider({
+               value: 5,
+               min: 0,
+               max: 10,
+               step: 0.5
+            });
+         });
+      </script>
+   </head>
+   <body>
+      <div id="wrapper">
+         <div id="container">
+            <div id="header">
+               <span class="title">SPOONS Survey</span>
+               <span class="progress-count">0/50</span>
+            </div>
+            <div id="tweet-container">
+               <span id="tweet" data-tweet-id="{{tweet_id}}">{{content}}</span>
+            </div>
+            <div id="valence-container" class="section">
+               <span class="label">emotional charge</span>
+               <div id="valence-slider"></div>
+               <div class="slider-labels">
+                  <div class="slider-label left">very negative</div>
+                  <div class="slider-label middle">neutral</div>
+                  <div class="slider-label right">very positive</div>
+               </div>
+            </div>
+            <div id="classes-container" class="section">
+               <span class="label">category</span>
+               <table class="classes">
+                  <tr>
+                     <td>
+                        <input type="radio" name="class" value="2"/>media<br>
+                        <span class='description'>the tweet is primarily concerned with a news story or other media event.</span>
+                     </td>
+                     <td>
+                        <input type="radio" name="class" value="4"/>snafu<br>
+                        <span class="description">the tweet indicates a problem with Netflix's service.</span>
+                     </td>
+                     <td>
+                        <input type="radio" name="class" value="7"/>complaint<br>
+                        <span class="description">the tweet contains complaints about Netflix but does not indicate an outage.</span>
+                     </td>
+                  </tr>
+                  <tr>
+                     <td>
+                        <input type="radio" name="class" value="9"/>happy<br>
+                        <span class="description">the tweet expresses happiness, joy, or satisfaction.</span>
+                     </td>
+                     <td>
+                        <input type="radio" name="class" value="3"/>neutral<br>
+                        <span class="description">the tweet expresses no strong emotion nor does it indicate a service issue.</span>
+                     </td>
+                     <td>
+                        <input type="radio" name="class" value="5"/>watching<br>
+                        <span class="description">the tweet contains information about what the author is watching on Netflix.</span>
+                     </td>
+                  </tr>
+                  <tr>
+                     <td>
+                        <input type="radio" name="class" value="6"/>response<br>
+                        <span class="description">the tweet is a response to another tweet. Often indicated by an "@".</span>
+                     </td>
+                     <td>
+                        <input type="radio" name="class" value="1"/>unknown<br>
+                        <span class="description">the tweet does not fit into one of the other classes described here.</span>
+                     </td>
+                     <td>
+                        <input type="radio" name="class" value="8"/>refuse to rate<br>
+                        <span class="description">the tweet is indecipherable to you i.e. it is in another language.</span>
+                     </td>
+                  </tr>
+               </table>
+            </div>
+            <div id="next-button">next</div>
+         </div>
+      </div>
+   </body>
+</html>
+

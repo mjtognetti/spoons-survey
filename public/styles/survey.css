@@ -1,0 +1,101 @@
+body {
+   font-family: Arial, sans-serif;
+}
+
+#wrapper {
+   width: 100%;
+   height: 100%;
+}
+
+#container {
+   position: relative;
+   width: 675px;
+   margin: 0 auto;
+}
+
+#header {
+   position: relative;
+}
+
+#header .title {
+   font-family: serif;
+   font-size: 40px;
+}
+
+#header .progress-count {
+   position: absolute;
+   right: 0;
+   bottom: 5px;
+   font-size: 20px;
+}
+
+#tweet-container {
+   width: 580px;
+   height: 80px;
+   margin: 35px auto;
+   background: #fff8bb;
+   border: 1px solid #ffe079;
+   display: table;
+}
+
+#tweet {
+   display: table-cell;
+   vertical-align: middle;
+   text-align: center;   
+}
+
+.label {
+   display: block;
+   font-weight: bold;
+   font-size: 16px;
+   margin-bottom: 10px;
+}
+
+.section {
+   margin-bottom: 40px;
+}
+
+.slider-labels {
+   width: 100%;
+   margin-top: 10px;
+}
+
+.slider-label {
+   display: inline-block;
+   width: 32.9%;
+}
+
+.middle {
+   text-align: center;
+}
+
+.right {
+   text-align: right;
+}
+
+table.classes {
+   width: 100%;
+   border-collapse: collapse;
+}
+
+table.classes td {
+   border: 5px solid #fff;
+   border-left: 0px;
+   width: 33%;
+}   
+
+.classes .description {
+   font-size: 11px;
+}
+
+#next-button {
+   padding: 20px 75px;
+   background: #fff8bb;
+   border: 1px solid #ffe079;
+   float: right;
+   font-size: 20px;
+}
+
+#next-button:hover {
+   cursor: pointer;
+}
