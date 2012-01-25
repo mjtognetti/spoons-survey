@@ -11,8 +11,6 @@ define("DB_AWS_DEV", "aws");
 class Database {
 
    private static $configurations = array(
-      'aws-dev' => array(
-      )
    );
 
    private function getDatabase($which) {
