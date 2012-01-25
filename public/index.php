@@ -1,7 +1,8 @@
 <?php
 
-require '../app/tweet.php';
-require '../app/utils/authenticate.php'; // $isAuthenticated(), returns true if session-authentic
+require '../app/guard.php';
+require '../app/survey.php';
+
 require '../lib/Slim/Slim.php';
 require '../lib/Slim/MustacheView.php';
 
@@ -23,10 +24,8 @@ $redirect = function($target) use ($app) {
    $app->redirect($rootUri.$target, 301);
 };
 
-// Middleware used to ensure only authenticated users can access
-// a page. If not authenticated, redirects to login page.
-$protect = function() use ($isAuthenticated, $redirect) {
-   if ( !$isAuthenticated() ) {
+$protect = function() use ($redirect) {
+   if ( !Guard::hasLoggedInUser() ) {
       $redirect('/login');
    }
 };
@@ -40,9 +39,9 @@ $app->get('/', $protect, function() use ($redirect) {
    $redirect('/survey');
 });
 
-$app->get('/login', function() use ($isAuthenticated, $redirect) {
+$app->get('/login', function() use ($redirect) {
    global $app;
-   if ( $isAuthenticated() ) {
+   if ( Guard::hasLoggedInUser() ) {
       $redirect('/survey');
    }
    else {
@@ -50,9 +49,12 @@ $app->get('/login', function() use ($isAuthenticated, $redirect) {
    }
 });
 
-$app->get('/survey', function() use ($fetchRateableTweet){
+$app->get('/survey', function(){
    global $app;
-   $app->render('survey.mustache', $fetchRateableTweet());
+
+   $db = new Database();
+   $tweet = $db->getTweetForUser(NULL);
+   $app->render('survey.mustache', $tweet);
 });
 
 $app->post('/survey', $protect, function() {
