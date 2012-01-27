@@ -1,90 +1,48 @@
 <?php
 
 require_once 'user.php';
-require_once 'database.php';
-
-class NoSuchUserException extends Exception {}
-class UserAlreadyExistsException extends Exception {}
-class LoginNameMismatchException extends Exception {}
+require_once 'exceptions.php';
 
 class Guard {
 
    public static function hasLoggedInUser() {
-      return isset($_SESSION['user_id']);
+      global $_SESSION;
+      return isset($_SESSION['cpLogin']);
    }
 
    public static function getLoggedInUser() {
+      global $_SESSION;
+
       if (!Guard::hasLoggedInUser()) return NULL;
-      
-      $db = new Database();
-      $id = $_SESSION['user_id'];
-      $userData = $db->getUserById($id);
-      
-      if (!$userData) {
-         throw new NoSuchUserException();
-      }
 
-      $user = new User(
-         $userData['id'],
-         $userData['cp_login'],
-         $userData['last_name'],
-         $userData['num_tweets_rated']
-      );
-
+      $cpLogin = $_SESSION['cpLogin'];
+      $user = User::getWithLogin($cpLogin);
       return $user;
-         
    }
 
-   public static function authenticate($last_name, $login) {
-      $db = new Database();
-      $userData = $db->getUserByLogin($login);
-      
-      if (!$userData) {
-         throw new NoSuchUserException();
-      }
-      else if ($userData['last_name'] != $last_name) {
+   public static function authenticate($cpLogin, $lastName) {
+      $user = User::getWithLogin($cpLogin);
+      if ($user->getLastName() != $lastName) {
          throw new NameMismatchException();
       }
-
-      $user = new User(
-         $userData['id'],
-         $userData['cp_login'],
-         $userData['last_name'],
-         $userData['num_tweets_rated']
-      );
-
       $user->authenticate();
-
       return $user;
    }
 
-   public static function register($last_name, $login) {
-      $db = new Database();
-      $userData = $db->registerUser($login, $last_name);
-      if (!$userData) {
-         throw new UserAlreadyExistsException();
-      }
-      
-      $user = new User(
-         $userData['id'],
-         $userData['cp_login'],
-         $userData['last_name'],
-         $userData['num_tweets_rated']
-      );
-
+   public static function register($cpLogin, $lastName) {
+      $user = User::register($cpLogin, $lastName);
       $user->authenticate();   
-
       return $user;
    }
 
    public static function login($user) {
       if ($user->authenticated()) {
-         $_SESSION['user_id'] = $user->getId();
+         $_SESSION['cpLogin'] = $user->getCPLogin();
       }
    }
 
    public static function logout() {
-      $_SESSION['user_id'] = NULL;
+      $_SESSION['cpLogin'] = NULL;
    }
 
 }

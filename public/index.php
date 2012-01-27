@@ -49,11 +49,15 @@ $app->get('/login', function() use ($redirect) {
    }
 });
 
-$app->get('/survey', function(){
-   global $app;
+$app->post('/login', function() {
+});
 
-   $db = new Database();
-   $tweet = $db->getTweetForUser(NULL);
+$app->get('/survey', $protect, function(){
+   global $app;
+   
+   $user = Guard::getLoggedInUser();
+   $survey = new Survey($user);
+   $tweet = $survey->fetchTweet();
    $app->render('survey.mustache', $tweet);
 });
 
