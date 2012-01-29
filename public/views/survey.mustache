@@ -1,6 +1,7 @@
 <html>
    <head>
       <link rel="stylesheet" type="text/css" href="styles/ui-lightness/jquery-ui-1.8.17.custom.css" />
+      <link rel="stylesheet" type="text/css" href="styles/common.css" />
       <link rel="stylesheet" type="text/css" href="styles/survey.css" />
       <script type="text/javascript" src="js/vendor/jquery-1.7.1.min.js"></script>
       <script type="text/javascript" src="js/vendor/jquery-ui-1.8.17.custom.min.js"></script>
@@ -23,7 +24,7 @@
                <span class="title">SPOONS Survey</span>
                <span class="progress-count">0/50</span>
             </div>
-            <div id="tweet-container">
+            <div id="tweet-container" class="highlighted">
                <span id="tweet" data-tweet-id="{{tweet_id}}">{{content}}</span>
             </div>
             <div id="valence-container" class="section">
@@ -82,7 +83,7 @@
                   </tr>
                </table>
             </div>
-            <div id="next-button">next</div>
+            <div id="next-button" class="highlighted">next</div>
          </div>
       </div>
    </body>

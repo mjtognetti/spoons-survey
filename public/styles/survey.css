@@ -1,27 +1,3 @@
-body {
-   font-family: Arial, sans-serif;
-}
-
-#wrapper {
-   width: 100%;
-   height: 100%;
-}
-
-#container {
-   position: relative;
-   width: 675px;
-   margin: 0 auto;
-}
-
-#header {
-   position: relative;
-}
-
-#header .title {
-   font-family: serif;
-   font-size: 40px;
-}
-
 #header .progress-count {
    position: absolute;
    right: 0;
@@ -33,8 +9,6 @@ body {
    width: 580px;
    height: 80px;
    margin: 35px auto;
-   background: #fff8bb;
-   border: 1px solid #ffe079;
    display: table;
 }
 
@@ -89,9 +63,7 @@ table.classes td {
 }
 
 #next-button {
-   padding: 20px 75px;
-   background: #fff8bb;
-   border: 1px solid #ffe079;
+   padding: 10px 50px;
    float: right;
    font-size: 20px;
 }

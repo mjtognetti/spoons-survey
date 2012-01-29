@@ -7,12 +7,4 @@
  */
 
 (function() {
-   function postRating() {
-   }
-
-   function postSuccess() {
-   }
-
-   function postFailure() {
-   }
 });

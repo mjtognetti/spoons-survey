@@ -1,0 +1,50 @@
+#instructions-container {
+   width: 100%;
+   margin: 40px auto;
+   display: table;
+}
+
+#instructions {
+   display: table-cell;
+   vertical-align: middle;
+   text-align: left;
+   padding: 15px;
+}
+
+form table {
+   width: 100%;
+   border-collapse: collapse;
+   border-style: hidden;
+}
+
+form table td, form table th {
+   border: 35px solid transparent;
+   border-bottom: 0px;
+   border-top: 0px;
+}
+
+form label {
+   display: block;
+   font-weight: bold;
+   font-size: 16px;
+}
+
+form input[type='text'] {
+   border: 1px solid #ccc;
+   font-size: 16px;
+   color: #222;
+   padding: 5px;
+   width: 100%;
+}
+
+
+#continue-button {
+   margin-top: 50px;
+   padding: 10px 50px;
+   float: right;
+   font-size: 20px;
+}
+
+#continue-button:hover {
+   cursor: pointer;
+}

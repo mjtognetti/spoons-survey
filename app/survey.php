@@ -12,7 +12,7 @@ class Survey {
 
    public function fetchTweet() {
       if ( $this->isComplete() ) throw new SurveyCompleteException();
-      $tweet = Storage::getTweetForUser($this->user->getCPLogin);
+      $tweet = Storage::fetchTweetForUser($this->user->getCPLogin());
       return $tweet;
    }
 

@@ -1,0 +1,29 @@
+body {
+   font-family: Arial, sans-serif;
+}
+
+#wrapper {
+   width: 100%;
+   height: 100%;
+}
+
+#container {
+   position: relative;
+   width: 675px;
+   margin: 0 auto;
+}
+
+#header {
+   position: relative;
+}
+
+#header .title {
+   font-family: serif;
+   font-size: 40px;
+}
+
+.highlighted {
+   background: #fff8bb;
+   border: 1px solid #ffe079;
+}
+

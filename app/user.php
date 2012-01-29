@@ -1,4 +1,4 @@
-<?
+<?php
 
 require_once 'storage.php';
 require_once 'exceptions.php';

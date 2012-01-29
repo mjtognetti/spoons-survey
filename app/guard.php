@@ -20,8 +20,7 @@ class Guard {
       return $user;
    }
 
-   public static function authenticate($cpLogin, $lastName) {
-      $user = User::getWithLogin($cpLogin);
+   public static function authenticate($user, $lastName) {
       if ($user->getLastName() != $lastName) {
          throw new NameMismatchException();
       }
