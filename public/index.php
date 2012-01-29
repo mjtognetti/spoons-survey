@@ -33,6 +33,7 @@ $protect = function() {
 //=============
 
 $app->get('/', $protect, function() {
+   global $app;
    $app->redirect('survey');
 });
 
@@ -99,7 +100,15 @@ $app->get('/logout', $protect, function() {
 // Instructions page.
 $app->get('/instructions', $protect, function() {
    global $app;
-   $app->render('instructions.mustache');
+
+   $survey = new Survey(Guard::getLoggedInUser());
+
+   if ($survey->isComplete()) {
+      $app->redirect('thanks');
+   }
+   else {
+      $app->render('instructions.mustache');
+   }
 });
 
 // Survey page
@@ -121,7 +130,7 @@ $app->get('/survey', $protect, function(){
       // Fetch a rateable tweet and the user's survey progress 
       // (the number of tweets the user has rated).
       $tweet = $survey->fetchTweet();
-      $progress = $survey->getProgress();
+      $progress = $survey->getProgress() + 1;
 
       // Render the page.
       $app->render('survey.mustache', array(
@@ -167,6 +176,7 @@ $app->get('/thanks', $protect, function() {
 
    // If the survey is complete render the thank you page.
    if ($survey->isComplete()) {
+      Guard::logout();
       $app->render('thanks.mustache');
    }
    // otherwise redirect the user to the survey.

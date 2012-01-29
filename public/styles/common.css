@@ -6,13 +6,20 @@ a {
    text-decoration: none;
 }
 
-a:link, a:hover, a:active, a:visited {
+a:link, a:visited {
    color: #000;
 }
 
 #wrapper {
    width: 100%;
    height: 100%;
+}
+
+#utility-bar {
+   position: fixed;
+   top: 0;
+   right: 5px;
+   font-size: 14px;
 }
 
 #container {
@@ -46,6 +53,10 @@ a:link, a:hover, a:active, a:visited {
 .button:hover {
    cursor: pointer;
    background: #fff29e;
+}
+
+a.button:visited {
+   color: #000;
 }
 
 .error-highlight {
