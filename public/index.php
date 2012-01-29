@@ -1,6 +1,7 @@
 <?php
 
 require_once '../app/exceptions.php';
+require_once '../app/user.php';
 require_once '../app/guard.php';
 require_once '../app/survey.php';
 
@@ -135,15 +136,17 @@ $app->post('/survey', $protect, function() {
 
    // Retrieve tweet id, valence rating, and class id from the post
    // parameters.
-   $tweetId = $post('tweetid');
-   $valence = $post('valence');
-   $classId = $post('classId');
+   $tweetId = $app->request()->post('tweetId'); //$post['tweetId'];
+   $valence = $post['valence'];
+   $classId = $post['classId'];
 
    // If any of them are missing return an error.
-   if (!$tweetId || !$valence || $classId) $app->error();
+   if (!$tweetId || !$valence || !$classId) {
+      $app->error();
+   }
    
    // If no user is authenticated and logged in return an error.
-   if (!Guard::hasLoggedInUser) $app->error();
+   if (!Guard::hasLoggedInUser()) $app->error(); 
 
    // Retrieve the logged in user and create a Survey object for her.
    $user = Guard::getLoggedInUser();
