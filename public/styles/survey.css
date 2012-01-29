@@ -9,6 +9,7 @@
    width: 580px;
    height: 80px;
    margin: 35px auto;
+   margin-bottom: 20px;
    display: table;
 }
 
@@ -18,8 +19,13 @@
    text-align: center;   
 }
 
+#error-container {
+   height: 20px;
+   font-size: 14px;
+}
+
 .label {
-   display: block;
+   display: inline-block;
    font-weight: bold;
    font-size: 16px;
    margin-bottom: 10px;
@@ -47,6 +53,12 @@
    text-align: right;
 }
 
+#required-error {
+   display: inline;
+   margin-left: 10px;
+   font-size: 14px;
+}
+
 table.classes {
    width: 100%;
    border-collapse: collapse;
@@ -60,14 +72,4 @@ table.classes td {
 
 .classes .description {
    font-size: 11px;
-}
-
-#next-button {
-   padding: 10px 50px;
-   float: right;
-   font-size: 20px;
-}
-
-#next-button:hover {
-   cursor: pointer;
 }

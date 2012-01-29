@@ -20,6 +20,7 @@
             <div id="tweet-container" class="highlighted">
                <span id="tweet" data-tweet-id="{{tweet.tweet_id}}">{{tweet.content}}</span>
             </div>
+            <div id="error-container" class="error-message"></div>
             <div id="valence-container" class="section">
                <span class="label">emotional charge</span>
                <div id="valence-slider"></div>
@@ -30,7 +31,7 @@
                </div>
             </div>
             <div id="classes-container" class="section">
-               <span class="label">category</span>
+               <span class="label">category</span><span id="required-error" class="error-message"></span>
                <table class="classes">
                   <tr>
                      <td>
@@ -76,7 +77,7 @@
                   </tr>
                </table>
             </div>
-            <div id="next-button" class="highlighted">next</div>
+            <div id="next-button" class="button">next</div>
          </div>
       </div>
    </body>

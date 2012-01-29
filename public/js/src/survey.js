@@ -7,11 +7,14 @@
  */
 
 initialize = (function($) {
-   function initialize() {
-      var valenceSlider, nextButton;
+   var valenceSlider, classTable, classGroup, errorContainer, nextButton;
 
+   function initialize() {
       // Obtain references to all important elements.
       valenceSlider = $('#valence-slider');
+      classTable = $('table.classes');
+      classRadioGroup = $('input[name="class"]');
+      errorContainer = $('#error-container');
       nextButton = $('#next-button');
 
       // Initialize the valence slider widget.
@@ -49,21 +52,13 @@ initialize = (function($) {
 
    // Notify the user that they must select a class before proceeding.
    function displayClassRequiredMessage() {
-      var classTable, classRadioGroup;
-
-      classTable = $('table.classes');
-      classRadioGroup = $('input[name="class"]');
-
-      classTable.addClass('required');
+      $('#required-error').text('*Please select which category this tweet belongs to.');
       classRadioGroup.on('change', removeClassRequiredMessage);
    }
 
    // Remove the notification that a class must be selected.
    function removeClassRequiredMessage() {
-      var classTable = $('table.classes'),
-          classRadioGroup = $('input[name="class"]');
-
-      classTable.removeClass('required');
+      $('#required-error').text("");
       classRadioGroup.off('change');
    }
 
@@ -72,7 +67,7 @@ initialize = (function($) {
       var tweetId, valence, classId;
 
       tweetId = $('#tweet').attr('data-tweet-id');
-      valence = $('#valence-slider').slider('value');
+      valence = valenceSlider.slider('value');
       classId = $('input[name="class"]:checked').val();
 
       $.ajax('survey', {
@@ -92,7 +87,7 @@ initialize = (function($) {
    }
 
    function submitFailure(response) {
-      alert('Error communicating with the server');
+      errorContainer.text('*Error communicating with the server - please check your internet connection and try again.'); 
    }
 
    return initialize;
