@@ -19,11 +19,12 @@
                   If you wish to participate in this survey please enter your calpoly username and your last name in the fields below. After filling in both fields click the continue button to recieve further instructions.
                </span>
             </div>
+            <div id='error-container' class='error-message'></div>
             <form id="loginForm" action="login" method="post">
                <table>
                   <tr>
                      <td>
-                        <label for="username">calpoly username</label>
+                        <label for="login">calpoly username</label>
                      </td>
                      <td>
                         <label for="lastName">last name</label>
@@ -31,7 +32,7 @@
                   </tr>
                   <tr>
                      <td>
-                        <input type="text" id="cpUsername" name="username"/>
+                        <input type="text" id="cpLogin" name="login"/>
                      </td>
                      <td>
                         <input type="text" id="lastName" name="lastName"/>

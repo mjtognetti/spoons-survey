@@ -27,8 +27,16 @@ body {
    border: 1px solid #ffe079;
 }
 
-.required {
+.required, .error-highlight {
    background: #ffd1c6 !important;
+}
+
+input.error-highlight {
+   border: 1px solid red !important;
+}
+
+.error, .error-message {
+   color: red;
 }
 
 

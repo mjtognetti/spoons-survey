@@ -53,10 +53,11 @@ $app->get('/login', function() {
 // Login attempt
 $app->post('/login', function() {
    global $app;
+   $post = $app->request()->post();
 
    // Get cpLogin and lastName from post paramters.
-   $cpLogin = $app->request()->post('username');
-   $lastName = $app->request()->post('lastName');
+   $cpLogin = $post['cpLogin'];
+   $lastName = $post['lastName'];
 
    // If either is missing return an error.
    if (!$cpLogin || !$lastName) $app->error();
@@ -76,15 +77,14 @@ $app->post('/login', function() {
       try {
          $user = Guard::register($cpLogin, $lastName);
          Guard::login($user);
+         echo 'success';
       }
       catch(UserAlreadyExistsException $e) {
-         echo '{"error": {"text":"user already exists"}}';
-         //$app->error();
+         echo 'user already exists';
       }
    }
    catch(NameMismatchException $d) {
-      echo '{"error": {"text":"name mismatch"}}';
-      //$app->error();
+      echo 'name mismatch';
    }
 
 });

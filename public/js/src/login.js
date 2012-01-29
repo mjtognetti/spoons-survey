@@ -1,10 +1,11 @@
 initialize = (function($) {
-   var cpUsernameInput, lastNameInput, continueButton;
+   var cpLoginInput, lastNameInput, errorContainer, continueButton;
 
    // Initialization
    function initialize() {
-      cpUsernameInput = $("#cpUsername");
+      cpLoginInput = $("#cpLogin");
       lastNameInput = $("#lastName");
+      errorContainer = $('#error-container');
       continueButton = $('#continue-button');
 
       continueButton.on('click', validateAndLogin);
@@ -12,71 +13,77 @@ initialize = (function($) {
 
    //
    function validateAndLogin() {
-      if (validate()) {
-         login();
-      }
+      if (validate()) login();
    }
 
    function login() {
       $.ajax('login', {
          type: 'POST',
          data: {
-            username: cpUsernameInput.val(),
+            cpLogin: cpLoginInput.val(),
             lastName: lastNameInput.val()
          },
-         success: loginSuccess,
-         error: loginFailure
+         success: loginRequestSuccess,
+         error: loginRequestError
       });
-         
    }
 
-   // Logged in successfully! Go to the instructions page.
-   function loginSuccess(response) {
-      window.location = 'instructions';
+   function loginRequestSuccess(response) {
+      if (response == 'success') loginSuccess();
+      else if (response == 'name mismatch') loginFailure();
    }
 
    // Something went wrong when trying to log in. Alert the user.
-   function loginFailure(response) {
-      console.log(response);
-      alert(response);
+   function loginRequestError(jqXHR, textStatus, errorThrown) {
+      errorContainer.text('*Error communicating with the server - please check your internet connection and try again.');
    }
 
-   // Ensures login form is valid. Returns true if valid, false otherwise.
+   // Logged in successfully! Go to the instructions page.
+   function loginSuccess(response, text) {
+      window.location = 'instructions';
+   }
+
+   function loginFailure() {
+      errorContainer.text('*Incorrect calpoly username / last name combination.');   
+   }
+
    function validate() {
-      var valid = true;
-      valid = require(cpUsernameInput) && valid;
-      valid = require(lastNameInput) && valid;
-      return valid;
+      var lastNameValid, cpLoginValid, errorMessage = "";
+
+      lastNameValid = require(lastNameInput);
+      cpLoginValid = require(cpLoginInput);
+
+      if (!lastNameValid && !cpLoginValid) errorMessage = '*Please enter both your calpoly username and your last name.';
+
+      if (!lastNameValid) {
+         errorMessage = errorMessage || '*Please enter your last name.';
+         highlight(lastNameInput);
+      }
+
+      if (!cpLoginValid) {
+         errorMessage = errorMessage || '*Please enter your calpoly username.';
+         highlight(cpLoginInput);
+      }
+
+      errorContainer.text(errorMessage);
+
+      return lastNameValid && cpLoginValid;
    }
 
-   // Requires an input element to have a value. Will return true
-   // if the element has a value, otherwise it will call the
-   // showRequiredMessage function and return false.
    function require(element) {
-      if (!element.val() || !$.trim(element.val())) {
-         showRequiredMessage(element);
-         return false;
-      }
-      else {
-         return true;
-      }
+      return element.val() && $.trim(element.val());
    }
 
-   // Indicates to the user that a required field is missing.
-   // Also attaches a listener to the element which will remove
-   // the notification on focus.
-   function showRequiredMessage(element) {
-      element.addClass('required');
-      element.on('focus.required', removeRequiredMessage);
+   function highlight(element) {
+      element.addClass('error-highlight');
+      element.on('focus', removeHighlight);
    }
 
-   // Removes the required field missing notification and
-   // removes itself as an event handler.
-   function removeRequiredMessage(e) {
+   function removeHighlight(e) {
       var element = $(e.target);
-      element.removeClass('required');
-      element.off('focus.required');
+      element.removeClass('error-highlight');
+      element.off('focus');
    }
-   
-   return initialize;
+
+   return initialize;   
 })($);

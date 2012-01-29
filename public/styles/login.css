@@ -1,6 +1,7 @@
 #instructions-container {
    width: 100%;
    margin: 40px auto;
+   margin-bottom: 20px;
    display: table;
 }
 
@@ -9,6 +10,11 @@
    vertical-align: middle;
    text-align: left;
    padding: 15px;
+}
+
+#error-container {
+   height: 20px;
+   font-size: 14px;
 }
 
 form table {
