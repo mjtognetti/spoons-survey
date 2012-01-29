@@ -27,3 +27,9 @@ body {
    border: 1px solid #ffe079;
 }
 
+.required {
+   border: 1px solid #ff6b49 !important;
+   background: #ffd1c6 !important;
+}
+
+

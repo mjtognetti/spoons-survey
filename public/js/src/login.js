@@ -65,7 +65,7 @@ initialize = (function($) {
    // Also attaches a listener to the element which will remove
    // the notification on focus.
    function showRequiredMessage(element) {
-      element.css('background', 'red');
+      element.addClass('required');
       element.on('focus.required', removeRequiredMessage);
    }
 
@@ -73,7 +73,7 @@ initialize = (function($) {
    // removes itself as an event handler.
    function removeRequiredMessage(e) {
       var element = $(e.target);
-      element.css('background', '#fff');
+      element.removeClass('required');
       element.off('focus.required');
    }
    
