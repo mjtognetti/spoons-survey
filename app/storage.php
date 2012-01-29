@@ -42,9 +42,14 @@ class Storage {
    }
 
    // Store a user's rating of a tweet.
-   public static function storeResults($cpLogin, $tweetId, $valence, $classId) {
+   // NOTE: This is the only function that uses user id. I would prefer to use
+   // cpLogin instead, but it breaks the database trigger. The trigger
+   // attempts to update num_tweets_rated in META_survey_users, but isn't
+   // able to because that table is used in the query (to determine user id
+   // from cpLogin).
+   public static function storeResults($userId, $tweetId, $valence, $classId) {
       self::$db->insert('DATA_survey_results', array(
-         'user_id' => self::$db->sqleval('(SELECT id FROM META_survey_users WHERE cp_login = %s)', $cpLogin),
+         'user_id' => $userId,
          'tweet_id' => $tweetId,
          'valence' => $valence,
          'class_id' => $classId
@@ -60,6 +65,7 @@ class Storage {
       }
       // else some other db error
       else {
+         echo $error;
          die;
       }
    } 

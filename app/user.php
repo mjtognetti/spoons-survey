@@ -4,16 +4,22 @@ require_once 'storage.php';
 require_once 'exceptions.php';
 
 class User {
+   private $id;
    private $cpLogin;
    private $lastName;
    private $numTweetsRated;
    private $isAuthenticated;
 
    function User($userData) {
+      $this->id = $userData['id'];
       $this->cpLogin = $userData['cp_login'];
       $this->lastName = $userData['last_name'];
-      $this->numTweetsRated = (array_key_exists('num_tweets_rated', $userData) ? $userData['num_tweets_rated'] : 0);
+      $this->numTweetsRated = $userData['num_tweets_rated'];
       $this->isAuthenticated = false;
+   }
+
+   public function getId() {
+      return $this->id;
    }
 
    public function getCPLogin() {

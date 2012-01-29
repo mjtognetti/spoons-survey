@@ -75,10 +75,6 @@ initialize = (function($) {
       valence = $('#valence-slider').slider('value');
       classId = $('input[name="class"]:checked').val();
 
-      console.log(tweetId);
-      console.log(valence);
-      console.log(classId);
-
       $.ajax('survey', {
          type: 'POST',
          data: {

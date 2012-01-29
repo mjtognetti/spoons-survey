@@ -18,7 +18,7 @@ class Survey {
 
    public function storeResults($tweetId, $valence, $classId) {
       $response = Storage::storeResults(
-         $this->user->getCPLogin(),
+         $this->user->getId(),
          $tweetId,
          $valence,
          $classId
