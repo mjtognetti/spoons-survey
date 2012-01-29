@@ -37,6 +37,7 @@ initialize = (function($) {
 
    // Something went wrong when trying to log in. Alert the user.
    function loginFailure(response) {
+      console.log(response);
       alert(response);
    }
 

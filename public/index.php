@@ -78,11 +78,13 @@ $app->post('/login', function() {
          Guard::login($user);
       }
       catch(UserAlreadyExistsException $e) {
-         $app->error();
+         echo '{"error": {"text":"user already exists"}}';
+         //$app->error();
       }
    }
    catch(NameMismatchException $d) {
-      $app->error();
+      echo '{"error": {"text":"name mismatch"}}';
+      //$app->error();
    }
 
 });
@@ -159,7 +161,18 @@ $app->post('/survey', $protect, function() {
 // Thank you page (survey complete)
 $app->get('/thanks', $protect, function() {
    global $app;
-   $app->render('thanks.mustache');
+
+   $user = Guard::getLoggedInUser();
+   $survey = new Survey($user);
+
+   // If the survey is complete render the thank you page.
+   if ($survey->isComplete()) {
+      $app->render('thanks.mustache');
+   }
+   // otherwise redirect the user to the survey.
+   else {
+      $app->redirect('survey');
+   }
 });
 
 $app->run();

@@ -11,10 +11,16 @@ class User {
    private $isAuthenticated;
 
    function User($userData) {
-      $this->id = $userData['id'];
+      // Login and last name are guaranteed to be known.
       $this->cpLogin = $userData['cp_login'];
       $this->lastName = $userData['last_name'];
       $this->numTweetsRated = $userData['num_tweets_rated'];
+
+      // Id will be unknown if the user was just
+      // registered. In such a case, use -1 as id to indicate its unknown.
+      $this->id = ( isset($userData['id']) ? $userData['id'] : -1);
+
+      // Users are not authenticated on creation.
       $this->isAuthenticated = false;
    }
 

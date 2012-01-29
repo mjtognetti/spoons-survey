@@ -12,9 +12,10 @@ class Storage {
       self::$db->error_handler = array('Storage', 'errorHandler');
    }
 
-   // Retrieve user data (id, cp login, last name, number of tweets rated) from the database.
-   // Format of user data is (id, cp_login, last_name, num_tweets_rated). Return value will
-   // be NULL if no user exists with $cpLogin.
+   // Retrieve user data (id, cp login, last name, number of tweets rated)
+   // from the database.
+   // Format of user data is (id, cp_login, last_name, num_tweets_rated).
+   // Return value will be NULL if no user exists with $cpLogin.
    public static function getUserDataForLogin($cpLogin) {
       $userData = self::$db->queryFirstRow("SELECT * FROM META_survey_users WHERE cp_login = %s", $cpLogin);
       return $userData;
@@ -25,10 +26,11 @@ class Storage {
    public static function registerUser($cpLogin, $lastName) {
       $userData = array(
          'cp_login' => $cpLogin,
-         'last_name' => $lastName
+         'last_name' => $lastName,
+         'num_tweets_rated' => 0
       );
       self::$db->insert('META_survey_users', $userData);
-      return new User($userData);
+      return $userData;
    }
 
    // Fetch a rateable tweet for the user with $cpLogin. A 'rateable' tweet is
