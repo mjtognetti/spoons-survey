@@ -1,0 +1,11 @@
+#continue-button {
+   text-decoration: none;
+   display: block;
+   padding: 10px 50px;
+   float: right;
+   font-size: 20px;
+}
+
+#continue-button:hover {
+   cursor: pointer;
+}
