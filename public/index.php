@@ -103,21 +103,54 @@ $app->get('/instructions', $protect, function() {
 $app->get('/survey', $protect, function(){
    global $app;
 
+   // Retrieve the currently logged in user and create
+   // a Survey object for her.
    $user = Guard::getLoggedInUser();
    $survey = new Survey($user);
 
+   // Check if the user has already completed the survey. If she
+   // has redirect to the thank you page.
    if ($survey->isComplete()) {
       $app->redirect('thanks');
    }
+   // If they haven't finished the survey, render the survey page.
    else {
+      // Fetch a rateable tweet and the user's survey progress 
+      // (the number of tweets the user has rated).
       $tweet = $survey->fetchTweet();
-      $app->render('survey.mustache', $tweet);
+      $progress = $survey->getProgress();
+
+      // Render the page.
+      $app->render('survey.mustache', array(
+         'tweet' => $tweet,
+         'progress' => $progress
+      ));
    }
 });
 
 // Survey rating submit
 $app->post('/survey', $protect, function() {
    global $app;
+   $post = $app->request()->post();
+
+   // Retrieve tweet id, valence rating, and class id from the post
+   // parameters.
+   $tweetId = $post('tweetid');
+   $valence = $post('valence');
+   $classId = $post('classId');
+
+   // If any of them are missing return an error.
+   if (!$tweetId || !$valence || $classId) $app->error();
+   
+   // If no user is authenticated and logged in return an error.
+   if (!Guard::hasLoggedInUser) $app->error();
+
+   // Retrieve the logged in user and create a Survey object for her.
+   $user = Guard::getLoggedInUser();
+   $survey = new Survey($user);
+
+   // Store the survey results for the tweet.
+   $survey->storeResults($tweetId, $valence, $classId);
 });
 
 // Thank you page (survey complete)

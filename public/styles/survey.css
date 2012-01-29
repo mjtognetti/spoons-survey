@@ -53,7 +53,7 @@ table.classes {
 }
 
 table.classes td {
-   border: 5px solid #fff;
+   border: 5px solid transparent;
    border-left: 0px;
    width: 33%;
 }   

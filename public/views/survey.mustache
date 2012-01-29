@@ -7,14 +7,7 @@
       <script type="text/javascript" src="js/vendor/jquery-ui-1.8.17.custom.min.js"></script>
       <script type="text/javascript" src="js/src/survey.js"></script>
       <script type="text/javascript">
-         $(function() {
-            $("#valence-slider").slider({
-               value: 5,
-               min: 0,
-               max: 10,
-               step: 0.5
-            });
-         });
+         $(initialize);
       </script>
    </head>
    <body>
@@ -22,10 +15,10 @@
          <div id="container">
             <div id="header">
                <span class="title">SPOONS Survey</span>
-               <span class="progress-count">0/50</span>
+               <span class="progress-count">{{progress}}/50</span>
             </div>
             <div id="tweet-container" class="highlighted">
-               <span id="tweet" data-tweet-id="{{tweet_id}}">{{content}}</span>
+               <span id="tweet" data-tweet-id="{{tweet.tweet_id}}">{{tweet.content}}</span>
             </div>
             <div id="valence-container" class="section">
                <span class="label">emotional charge</span>
