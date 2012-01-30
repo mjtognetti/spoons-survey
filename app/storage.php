@@ -13,9 +13,9 @@ class Storage {
       $dbConfigs = $_CONFIG['databases'];
 
       self::$databases = array();      
-      self::$databases[] = self::initDatabase($dbConfigs['aws-dev']);
-      self::$databases[] = self::initDatabase($dbConfigs['aws']);
-      self::$databases[] = self::initDatabase($dbConfigs['abra']);
+      self::$databases['aws-dev'] = self::initDatabase($dbConfigs['aws-dev']);
+      self::$databases['aws'] = self::initDatabase($dbConfigs['aws']);
+      self::$databases['abra'] = self::initDatabase($dbConfigs['abra']);
    }
 
    private static function initDatabase($config) {
@@ -36,7 +36,8 @@ class Storage {
    // Format of user data is (id, cp_login, last_name, num_tweets_rated).
    // Return value will be NULL if no user exists with $cpLogin.
    public static function getUserDataForLogin($cpLogin) {
-      $userData = self::$databases[0]->queryFirstRow("SELECT * FROM META_survey_users WHERE cp_login = %s", $cpLogin);
+      $db = self::$databases['aws'];
+      $userData = $db->queryFirstRow("SELECT * FROM META_survey_users WHERE cp_login = %s", $cpLogin);
       return $userData;
    }
 
@@ -48,7 +49,12 @@ class Storage {
          'last_name' => $lastName,
          'num_tweets_rated' => 0
       );
-      self::$databases[0]->insert('META_survey_users', $userData);
+
+      // Loop through all available databases, inserting into each.
+      foreach(self::$databases as $db) {
+         $db->insert('META_survey_users', $userData);
+      }
+
       return $userData;
    }
 
@@ -58,7 +64,7 @@ class Storage {
    // been rated the fewest times).
    public static function fetchTweetForUser($id) {
       $query = "SELECT * FROM DATA_survey_tweets WHERE tweet_id NOT IN (SELECT tweet_id FROM DATA_survey_results WHERE user_id = %i) ORDER BY num_ratings LIMIT 50";
-      $tweet = self::$databases[0]->queryFirstRow($query, $id);
+      $tweet = self::$databases['aws']->queryFirstRow($query, $id);
       return $tweet;
    }
 
@@ -69,14 +75,16 @@ class Storage {
    // able to because that table is used in the query (to determine user id
    // from cpLogin).
    public static function storeResults($userId, $tweetId, $valence, $classId) {
-      $db = self::$databases[0];
-      $db->insert('DATA_survey_results', array(
-         'user_id' => $userId,
-         'tweet_id' => $tweetId,
-         'twitter_id' => $db->sqleval('(SELECT twitter_id FROM DATA_tweets WHERE id = %i)', $tweetId),
-         'valence' => $valence,
-         'class_id' => $classId
-      ));
+      // Loop through each database, inserting into each.
+      foreach(self::$databases as $db) {
+         $db->insert('DATA_survey_results', array(
+            'user_id' => $userId,
+            'tweet_id' => $tweetId,
+            'twitter_id' => $db->sqleval('(SELECT twitter_id FROM DATA_tweets WHERE id = %i)', $tweetId),
+            'valence' => $valence,
+            'class_id' => $classId
+         ));
+      }
    }
 
    public static function errorHandler($params) {
