@@ -72,20 +72,20 @@ $app->post('/login', function() {
       $user = User::getWithLogin($cpLogin);
       Guard::authenticate($user, $lastName);
       Guard::login($user);
-      echo 'success';
+      echo 'success ';
    }
    catch(NoSuchUserException $e) {
       try {
          $user = Guard::register($cpLogin, $lastName);
          Guard::login($user);
-         echo 'success';
+         $app->response()->write('success ');
       }
       catch(UserAlreadyExistsException $e) {
-         echo 'user already exists';
+         echo('user already exists ');
       }
    }
    catch(NameMismatchException $d) {
-      echo 'name mismatch';
+      echo('name mismatch ');
    }
 
 });

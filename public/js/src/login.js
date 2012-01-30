@@ -29,6 +29,7 @@ initialize = (function($) {
    }
 
    function loginRequestSuccess(response) {
+      response = $.trim(response);
       if (response == 'success') loginSuccess();
       else if (response == 'name mismatch') loginFailure();
    }

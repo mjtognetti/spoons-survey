@@ -53,6 +53,7 @@ class Storage {
       self::$db->insert('DATA_survey_results', array(
          'user_id' => $userId,
          'tweet_id' => $tweetId,
+         'twitter_id' => self::$db->sqleval('(SELECT twitter_id FROM DATA_tweets WHERE id = %i)', $tweetId),
          'valence' => $valence,
          'class_id' => $classId
       ));
