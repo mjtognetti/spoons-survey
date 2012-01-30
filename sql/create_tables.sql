@@ -2,7 +2,12 @@ CREATE TABLE DATA_survey_tweets (
    tweet_id INT NOT NULL,
    content VARCHAR(200) NOT NULL,
    num_ratings INT NOT NULL DEFAULT 0,
+<<<<<<< HEAD
    PRIMARY KEY(tweet_id)
+=======
+   PRIMARY KEY (tweet_id),
+   FOREIGN KEY (tweet_id) REFERENCES DATA_tweets(id)
+>>>>>>> 5eac212dff05713f653ab90f835faeb6888e1e75
 );
 
 CREATE TABLE META_survey_users (
