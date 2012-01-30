@@ -1,15 +1,34 @@
 <?php
 require_once '../lib/meekrodb.2.0.class.php';
-require_once '../config/development.php';
+require_once '../config/production.php';
 require_once 'exceptions.php';
 
 class Storage {
 
    private static $db;
+   private static $databases;
 
    public static function initialize() {
-      self::$db = new MeekroDB();
-      self::$db->error_handler = array('Storage', 'errorHandler');
+      global $_CONFIG;
+      $dbConfigs = $_CONFIG['databases'];
+
+      self::$databases = array();      
+      self::$databases[] = self::initDatabase($dbConfigs['aws-dev']);
+      self::$databases[] = self::initDatabase($dbConfigs['aws']);
+      self::$databases[] = self::initDatabase($dbConfigs['abra']);
+   }
+
+   private static function initDatabase($config) {
+      $db = new MeekroDB(
+         $config['host'],
+         $config['username'],
+         $config['password'],
+         $config['dbName'],
+         $config['port'],
+         $config['encoding']
+      );
+      $db->error_handler = array('Storage', 'errorHandler');
+      return $db;
    }
 
    // Retrieve user data (id, cp login, last name, number of tweets rated)
@@ -17,7 +36,7 @@ class Storage {
    // Format of user data is (id, cp_login, last_name, num_tweets_rated).
    // Return value will be NULL if no user exists with $cpLogin.
    public static function getUserDataForLogin($cpLogin) {
-      $userData = self::$db->queryFirstRow("SELECT * FROM META_survey_users WHERE cp_login = %s", $cpLogin);
+      $userData = self::$databases[0]->queryFirstRow("SELECT * FROM META_survey_users WHERE cp_login = %s", $cpLogin);
       return $userData;
    }
 
@@ -29,7 +48,7 @@ class Storage {
          'last_name' => $lastName,
          'num_tweets_rated' => 0
       );
-      self::$db->insert('META_survey_users', $userData);
+      self::$databases[0]->insert('META_survey_users', $userData);
       return $userData;
    }
 
@@ -39,7 +58,7 @@ class Storage {
    // been rated the fewest times).
    public static function fetchTweetForUser($id) {
       $query = "SELECT * FROM DATA_survey_tweets WHERE tweet_id NOT IN (SELECT tweet_id FROM DATA_survey_results WHERE user_id = %i) ORDER BY num_ratings LIMIT 50";
-      $tweet = self::$db->queryFirstRow($query, $id);
+      $tweet = self::$databases[0]->queryFirstRow($query, $id);
       return $tweet;
    }
 
@@ -50,10 +69,11 @@ class Storage {
    // able to because that table is used in the query (to determine user id
    // from cpLogin).
    public static function storeResults($userId, $tweetId, $valence, $classId) {
-      self::$db->insert('DATA_survey_results', array(
+      $db = self::$databases[0];
+      $db->insert('DATA_survey_results', array(
          'user_id' => $userId,
          'tweet_id' => $tweetId,
-         'twitter_id' => self::$db->sqleval('(SELECT twitter_id FROM DATA_tweets WHERE id = %i)', $tweetId),
+         'twitter_id' => $db->sqleval('(SELECT twitter_id FROM DATA_tweets WHERE id = %i)', $tweetId),
          'valence' => $valence,
          'class_id' => $classId
       ));
