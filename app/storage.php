@@ -16,6 +16,7 @@ class Storage {
       self::$databases['aws-dev'] = self::initDatabase($dbConfigs['aws-dev']);
       self::$databases['aws'] = self::initDatabase($dbConfigs['aws']);
       self::$databases['abra'] = self::initDatabase($dbConfigs['abra']);
+      self::$databases['abra2'] = self::initDatabase($dbConfigs['abra2']);
    }
 
    private static function initDatabase($config) {
@@ -50,10 +51,7 @@ class Storage {
          'num_tweets_rated' => 0
       );
 
-      // Loop through all available databases, inserting into each.
-      foreach(self::$databases as $db) {
-         $db->insert('META_survey_users', $userData);
-      }
+      self::$databases['aws']->insert('META_survey_users', $userData);
 
       return $userData;
    }
