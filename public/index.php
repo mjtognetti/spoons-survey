@@ -77,14 +77,14 @@ $app->post('/login', function() {
 
    // Try to log the user in.
    try {
-      $user = User::getWithLogin($cpLogin);
+      $user = User::getWithLoginAndCourse($cpLogin, $course);
       Guard::authenticate($user, $lastName);
       Guard::login($user);
       echo 'success ';
    }
    catch(NoSuchUserException $e) {
       try {
-         $user = Guard::register($cpLogin, $lastName);
+         $user = Guard::register($cpLogin, $lastName, $course, $instructor);
          Guard::login($user);
          $app->response()->write('success ');
       }
@@ -92,8 +92,8 @@ $app->post('/login', function() {
          echo('user already exists ');
       }
    }
-   catch(NameMismatchException $d) {
-      echo('name mismatch ');
+   catch(IncorrectLoginDetailsException $d) {
+      echo('incorrect login ');
    }
 
 });

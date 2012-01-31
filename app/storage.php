@@ -36,18 +36,20 @@ class Storage {
    // from the database.
    // Format of user data is (id, cp_login, last_name, num_tweets_rated).
    // Return value will be NULL if no user exists with $cpLogin.
-   public static function getUserDataForLogin($cpLogin) {
+   public static function getUserDataForLoginAndCourse($cpLogin, $course) {
       $db = self::$databases['aws'];
-      $userData = $db->queryFirstRow("SELECT * FROM META_survey_users WHERE cp_login = %s", $cpLogin);
+      $userData = $db->queryFirstRow("SELECT * FROM META_survey_users WHERE cp_login = %s AND course = %i", $cpLogin, $course);
       return $userData;
    }
 
    // Register a new user, a UserAlreadyExistsException will be thrown if
    // a user with $cpLogin already exists.
-   public static function registerUser($cpLogin, $lastName) {
+   public static function registerUser($cpLogin, $lastName, $course, $instructor) {
       $userData = array(
          'cp_login' => $cpLogin,
          'last_name' => $lastName,
+         'course' => $course,
+         'instructor' => $instructor,
          'num_tweets_rated' => 0
       );
 

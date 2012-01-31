@@ -26,7 +26,7 @@ initialize = (function($) {
             cpLogin: cpLoginInput.val(),
             lastName: lastNameInput.val(),
             course: courseInput.val(),
-            instructor: courseInput.val()
+            instructor: instructorInput.val()
          },
          success: loginRequestSuccess,
          error: loginRequestError
@@ -36,7 +36,7 @@ initialize = (function($) {
    function loginRequestSuccess(response) {
       response = $.trim(response);
       if (response == 'success') loginSuccess();
-      else if (response == 'name mismatch') loginFailure();
+      else if (response == 'incorrect login') loginFailure();
    }
 
    // Something went wrong when trying to log in. Alert the user.
@@ -50,7 +50,7 @@ initialize = (function($) {
    }
 
    function loginFailure() {
-      errorContainer.text('*Incorrect calpoly username / last name combination.');   
+      errorContainer.text('*Incorrect login details - please make sure your calpoly username, last name, course number, and instructor are correct.');   
    }
 
    function validate() {
@@ -67,7 +67,7 @@ initialize = (function($) {
       }
 
       if (!require(courseInput)) {
-         errors.push('course');
+         errors.push('course number');
          highlight(courseInput);
       }
 
