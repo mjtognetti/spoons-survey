@@ -61,7 +61,7 @@ class Storage {
    // have been rated by a minimal number of other users (i.e. the tweet thats
    // been rated the fewest times).
    public static function fetchTweetForUser($id) {
-      $query = "SELECT * FROM DATA_survey_tweets WHERE tweet_id NOT IN (SELECT tweet_id FROM DATA_survey_results WHERE user_id = %i) ORDER BY num_ratings LIMIT 50";
+      $query = "SELECT * FROM DATA_survey_tweets WHERE tweet_id NOT IN (SELECT tweet_id FROM DATA_survey_results WHERE user_id = %i) ORDER BY num_ratings";
       $tweet = self::$databases['aws']->queryFirstRow($query, $id);
       return $tweet;
    }
