@@ -145,17 +145,27 @@ $app->post('/survey', $protect, function() {
    global $app;
    $post = $app->request()->post();
 
-   // Retrieve tweet id, valence rating, and class id from the post
-   // parameters.
-   $tweetId = $app->request()->post('tweetId'); //$post['tweetId'];
-   $valence = $post['valence'];
-   $classId = $post['classId'];
-
    // If any of them are missing return an error.
-   if (!$tweetId || !$valence || !$classId) {
+   // TODO: more descriptive error message.
+   if (!array_key_exists('tweetId', $post) ||
+       !array_key_exists('valence', $post) ||
+       !array_key_exists('classId', $post)) 
+   {
       $app->error();
    }
    
+   // Retrieve tweet id, valence rating, and class id from the post
+   // parameters.
+   $tweetId = $post['tweetId'];
+   $valence = $post['valence'];
+   $classId = $post['classId'];
+
+   // TODO: more descriptive error messages.
+   if (!is_numeric($tweetId) || !is_numeric($valence) || !is_numeric($classId))
+   {
+      $app->error();
+   }
+
    // If no user is authenticated and logged in return an error.
    if (!Guard::hasLoggedInUser()) $app->error(); 
 
