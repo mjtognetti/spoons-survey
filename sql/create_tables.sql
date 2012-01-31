@@ -14,7 +14,7 @@ CREATE TABLE META_survey_users (
    instructor VARCHAR(50) NOT NULL,
    num_tweets_rated INT NOT NULL DEFAULT 0,
    PRIMARY KEY (id),
-   UNIQUE (cp_login)
+   UNIQUE (cp_login, course)
 );
 
 CREATE TABLE DATA_survey_results (
