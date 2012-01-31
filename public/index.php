@@ -56,16 +56,24 @@ $app->post('/login', function() {
    global $app;
    $post = $app->request()->post();
 
+   if (!array_key_exists('cpLogin', $post) ||
+       !array_key_exists('lastName', $post) ||
+       !array_key_exists('course', $post) ||
+       !array_key_exists('instructor', $post))
+   {
+      $app->error();
+   }
+
    // Get cpLogin and lastName from post paramters.
    $cpLogin = $post['cpLogin'];
    $lastName = $post['lastName'];
-
-   // If either is missing return an error.
-   if (!$cpLogin || !$lastName) $app->error();
+   $course = $post['course'];
+   $instructor = $post['instructor'];
 
    // Ensure case doesn't matter.
    $cpLogin = strtolower($cpLogin);
    $lastName = strtolower($lastName);
+   $instructor = strtolower($instructor);
 
    // Try to log the user in.
    try {

@@ -10,6 +10,8 @@ CREATE TABLE META_survey_users (
    id INT AUTO_INCREMENT NOT NULL,
    cp_login VARCHAR(10) NOT NULL,
    last_name VARCHAR(50) NOT NULL,
+   course VARCHAR(20) NOT NULL,
+   instructor VARCHAR(50) NOT NULL,
    num_tweets_rated INT NOT NULL DEFAULT 0,
    PRIMARY KEY (id),
    UNIQUE (cp_login)

@@ -1,10 +1,13 @@
 initialize = (function($) {
-   var cpLoginInput, lastNameInput, errorContainer, continueButton;
+   var cpLoginInput, lastNameInput, courseInput, instructorInput,
+       errorContainer, continueButton;
 
    // Initialization
    function initialize() {
       cpLoginInput = $("#cpLogin");
       lastNameInput = $("#lastName");
+      courseInput = $('#course');
+      instructorInput = $('#instructor');
       errorContainer = $('#error-container');
       continueButton = $('#continue-button');
 
@@ -21,7 +24,9 @@ initialize = (function($) {
          type: 'POST',
          data: {
             cpLogin: cpLoginInput.val(),
-            lastName: lastNameInput.val()
+            lastName: lastNameInput.val(),
+            course: courseInput.val(),
+            instructor: courseInput.val()
          },
          success: loginRequestSuccess,
          error: loginRequestError
@@ -49,26 +54,38 @@ initialize = (function($) {
    }
 
    function validate() {
-      var lastNameValid, cpLoginValid, errorMessage = "";
+      var errors = [], errorMessage = "";
 
-      lastNameValid = require(lastNameInput);
-      cpLoginValid = require(cpLoginInput);
+      if (!require(cpLoginInput)) {
+         errors.push('calpoly username');
+         highlight(cpLoginInput);
+      }
 
-      if (!lastNameValid && !cpLoginValid) errorMessage = '*Please enter both your calpoly username and your last name.';
-
-      if (!lastNameValid) {
-         errorMessage = errorMessage || '*Please enter your last name.';
+      if (!require(lastNameInput)) {
+         errors.push('last name');
          highlight(lastNameInput);
       }
 
-      if (!cpLoginValid) {
-         errorMessage = errorMessage || '*Please enter your calpoly username.';
-         highlight(cpLoginInput);
+      if (!require(courseInput)) {
+         errors.push('course');
+         highlight(courseInput);
+      }
+
+      if (!require(instructorInput)) {
+         errors.push('instructor');
+         highlight(instructorInput);
+      }
+
+      if (errors.length == 1) {
+         errorMessage = '*Please enter your ' + errors[0] + '.';
+      }
+      else if (errors.length > 1) {
+         errorMessage = '*Please enter your ' + errors.join(' and ') + '.';
       }
 
       errorContainer.text(errorMessage);
 
-      return lastNameValid && cpLoginValid;
+      return errors.length == 0;
    }
 
    function require(element) {
