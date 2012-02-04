@@ -50,7 +50,7 @@ initialize = (function($) {
    }
 
    function loginFailure() {
-      errorContainer.text('*Incorrect login details - please make sure your calpoly username, last name, course number, and instructor are correct.');   
+      errorContainer.text('*Incorrect login details - please make sure your calpoly username, last name, course number (if applicable) are correct.');   
    }
 
    function validate() {
@@ -66,13 +66,8 @@ initialize = (function($) {
          highlight(lastNameInput);
       }
 
-      if (!require(courseInput)) {
-         errors.push('course number');
-         highlight(courseInput);
-      }
-
-      if (!require(instructorInput)) {
-         errors.push('instructor');
+      if (require(courseInput) && !require(instructorInput)) {
+         errors.push('instructor name');
          highlight(instructorInput);
       }
 

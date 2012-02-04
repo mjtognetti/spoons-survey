@@ -1,7 +1,7 @@
 #instructions-container {
    width: 100%;
-   margin: 40px auto;
-   margin-bottom: 20px;
+   margin: 30px auto;
+   margin-bottom: 10px;
    display: table;
 }
 
@@ -13,7 +13,8 @@
 }
 
 #error-container {
-   height: 30px;
+   height: 2em;
+   margin-bottom:5px;
    font-size: 14px;
 }
 

@@ -32,6 +32,11 @@ $protect = function() {
 // Routes
 //=============
 
+$app->notFound(function() use ($app) {
+   $app->redirect('login');
+});
+
+
 $app->get('/', $protect, function() {
    global $app;
    $app->redirect('survey');
