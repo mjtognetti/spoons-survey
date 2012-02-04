@@ -15,8 +15,8 @@ class Storage {
       self::$databases = array();      
       self::$databases['aws-dev'] = self::initDatabase($dbConfigs['aws-dev']);
       self::$databases['aws'] = self::initDatabase($dbConfigs['aws']);
-      self::$databases['abra'] = self::initDatabase($dbConfigs['abra']);
-      self::$databases['abra2'] = self::initDatabase($dbConfigs['abra2']);
+      //self::$databases['abra'] = self::initDatabase($dbConfigs['abra']);
+      //self::$databases['abra2'] = self::initDatabase($dbConfigs['abra2']);
    }
 
    private static function initDatabase($config) {
@@ -75,12 +75,17 @@ class Storage {
    // able to because that table is used in the query (to determine user id
    // from cpLogin).
    public static function storeResults($userId, $tweetId, $valence, $classId) {
+      // NOTE: This query is here because some of the databases do not have
+      // the DATA_tweets table, but ALL need the twitterId.
+      $twitterId = self::$databases['aws']->queryFirstField('SELECT twitter_id FROM DATA_tweets where id = %i', $tweetId);
+
+
       // Loop through each database, inserting into each.
       foreach(self::$databases as $db) {
          $db->insert('DATA_survey_results', array(
             'user_id' => $userId,
             'tweet_id' => $tweetId,
-            'twitter_id' => $db->sqleval('(SELECT twitter_id FROM DATA_tweets WHERE id = %i)', $tweetId),
+            'twitter_id' => $twitterId,
             'valence' => $valence,
             'class_id' => $classId
          ));
